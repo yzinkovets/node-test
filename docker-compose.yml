@@ -1,0 +1,25 @@
+# https://github.com/nodejs/docker-node/blob/master/README.md#how-to-use-this-image
+
+version: "3.4"
+services:
+  node:
+    build:
+      context: .
+    user: "node"
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=production
+      - DEBUG=*
+      - DEBUG_HIDE_DATE=yes
+      - DEBUG_COLORS=yes
+    volumes:
+      - ./:/home/node/app
+    ports:
+      - 3001:3000
+
+  redis:
+    hostname: redis
+    image: redis
+    restart: always
+    # ports:
+    #   - 7379:6379
