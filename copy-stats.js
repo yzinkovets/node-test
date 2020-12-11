@@ -55,6 +55,18 @@ mongoose.connect('mongodb://localhost:27017/creator',{
     useFindAndModify: false
 });
 
+/*
+// Production
+mongoose.connect('mongodb://master:<password>@wizeflow-prod.cluster-ctcfk2m5eqck.eu-west-1.docdb.amazonaws.com:27017/creator',
+    {
+        useNewUrlParser: true,
+        ssl: true,
+        sslValidate: false,
+        sslCA: fs.readFileSync('./rds-combined-ca-bundle.pem')
+    }
+);
+*/
+
 mongoose.connection.on('open', async function () {
     // const collections = Object.keys(mongoose.connection.collections);
     // console.log(collections);
@@ -154,7 +166,8 @@ async function generatePageViewEvents(uuid, smartlink, outputFile) {
             let eventPageView = JSON.parse(JSON.stringify(prevEvent)); // copy object
             eventPageView.action = 'PAGE_VIEW';
             eventPageView.dt = event.dt;
-            eventPageView.duration = event.dt - prevEvent.dt;
+            // in old stats maximal page view time is 900 seconds
+            eventPageView.duration = Math.min(event.dt - prevEvent.dt, 900);
             eventPageView.page = currentPage;
 
             if (eventPageView.duration > 0) {
