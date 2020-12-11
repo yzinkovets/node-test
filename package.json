@@ -6,6 +6,7 @@
     "author": "Yuri",
     "dependencies": {
         "@apla/clickhouse": "^1.6.4",
+        "aws-sdk": "^2.802.0",
         "clickhouse": "^2.1.5",
         "debug": "^4.2.0",
         "express": "^4.17.1",
